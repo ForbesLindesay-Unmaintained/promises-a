@@ -1,6 +1,6 @@
 {
   "name": "promises-a",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A bare bones implementation of Promises/A intended to pass https://github.com/domenic/promise-tests while being as small as possible",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
   "author": "ForbesLindesay",
   "license": "MIT",
   "devDependencies": {
-    "promise-tests": "~2.0.0"
+    "promise-tests": "*",
+    "uglify-js": "*"
   }
 }
