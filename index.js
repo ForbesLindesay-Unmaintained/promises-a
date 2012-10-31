@@ -7,7 +7,7 @@
 
     function then(cb, eb, pb) {
       var def = promise();
-      function done(next) {
+      function done() {
         var callback = fulfilled ? cb : eb;
         if (callback) {
           setTimeout(function () {
@@ -18,14 +18,11 @@
               return def.reject(ex);
             }
             def.fulfill(value);
-            if (next) next();
           }, 0);
         } else if (fulfilled) {
           def.fulfill(val);
-          if (next) next();
         } else {
           def.reject(val);
-          if (next) next();
         }
       }
       if (resolved) {
@@ -44,11 +41,9 @@
       resolved = true;
       fulfilled = success;
       val = value;
-      var i = 0;
-      function next() {
-        if (i < waiting.length) waiting[i++](next);
+      for (var i = 0; i < waiting.length; i++) {
+        waiting[i]();
       }
-      next();
     }
     function fulfill(val) {
       resolve(true, val);
