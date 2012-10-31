@@ -4,46 +4,32 @@
     var resolved = false,
         fulfilled = false,
         val,
-        rejectors = [], acceptors = [];
+        waiting = [];
 
     function then(cb, eb, pb) {
       var def = promises.pending();
-      function fulfill(val) {
-        setTimeout(function () {
-          if (cb) {
+      function done() {
+        var callback = fulfilled ? cb : eb;
+        if (callback) {
+          setTimeout(function () {
+            var value;
             try {
-              val = cb(val);
+              value = callback(val);
             } catch (ex) {
               return def.reject(ex);
             }
-          }
+            def.fulfill(value);
+          }, 0);
+        } else if (fulfilled) {
           def.fulfill(val);
-        }, 0);
-      }
-      function reject(err) {
-        setTimeout(function () {
-          var val;
-          if (eb) {
-            try {
-              val = eb(err);
-            } catch (ex) {
-              return def.reject(ex);
-            }
-            def.fulfill(val);
-          } else {
-            def.reject(err);
-          }
-        }, 0);
+        } else {
+          def.reject(val);
+        }
       }
       if (resolved) {
-        if (fulfilled) {
-          fulfill(val);
-        } else {
-          reject(val);
-        }
+        done();
       } else {
-        acceptors.push(fulfill);
-        rejectors.push(reject);
+        waiting.push(done);
       }
       return def.promise;
     }
@@ -56,9 +42,8 @@
       resolved = true;
       fulfilled = success;
       val = value;
-      var cbs = success ? acceptors : rejectors;
-      for (var i = 0; i < cbs.length; i++) {
-        cbs[i](val);
+      for (var i = 0; i < waiting.length; i++) {
+        waiting[i]();
       }
     }
     function fulfill(val) {
