@@ -1,0 +1,22 @@
+{
+  "name": "promises-a",
+  "version": "0.0.0",
+  "description": "A bare bones implementation of Promises/A intended to pass https://github.com/domenic/promise-tests while being as small as possible",
+  "main": "index.js",
+  "scripts": {
+    "test": "promise-tests all index.js && uglifyjs index.js > index.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ForbesLindesay/promises-a.git"
+  },
+  "keywords": [
+    "promises",
+    "promise"
+  ],
+  "author": "ForbesLindesay",
+  "license": "MIT",
+  "devDependencies": {
+    "promise-tests": "~2.0.0"
+  }
+}
