@@ -1,0 +1,5 @@
+node_modules
+npm-debug.log
+adapter.js
+component.json
+*.min.js

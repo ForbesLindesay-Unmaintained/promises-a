@@ -1,10 +1,10 @@
 {
   "name": "promises-a",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A bare bones implementation of Promises/A intended to pass https://github.com/domenic/promise-tests while being as small as possible",
   "main": "index.js",
   "scripts": {
-    "test": "promise-tests all index.js && uglifyjs index.js > index.min.js"
+    "test": "promise-tests all adapter.js && uglifyjs index.js > index.min.js"
   },
   "repository": {
     "type": "git",

@@ -1,13 +1,12 @@
 (function () {
-  var promises = {};
-  promises.pending = function () {
+  function promise() {
     var resolved = false,
         fulfilled = false,
         val,
         waiting = [];
 
     function then(cb, eb, pb) {
-      var def = promises.pending();
+      var def = promise();
       function done() {
         var callback = fulfilled ? cb : eb;
         if (callback) {
@@ -55,21 +54,10 @@
 
     return {promise: {then: then}, fulfill: fulfill, reject: reject};
   };
-
-  promises.fulfilled = function (val) {
-    var def = promises.pending();
-    def.fulfill(val);
-    return def.promise;
-  };
-
-  promises.rejected = function (err) {
-    var def = promises.pending();
-    def.reject(err);
-    return def.promise;
-  };
+  
   if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
-    module.exports = promises;
+    module.exports = promise;
   } else {
-    window.promises = promises;
+    window.promise = promise;
   }
 }());
