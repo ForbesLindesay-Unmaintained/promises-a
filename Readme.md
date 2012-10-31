@@ -1,4 +1,4 @@
-
+[![Build Status](https://secure.travis-ci.org/ForbesLindesay/promises-a.png)](http://travis-ci.org/ForbesLindesay/promises-a)
 # promises-a
 
   A bare bones implementation of Promises/A intended to pass all [promise-tests](https://github.com/domenic/promise-tests) while being as small as possible.
