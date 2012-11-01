@@ -3,8 +3,16 @@
     var resolved = false,
         fulfilled = false,
         val,
-        waiting = [];
+        waiting = [], running = false;
 
+    function next() {
+      if (waiting.length) {
+        running = true;
+        waiting.shift()();
+      } else {
+        running = false;
+      }
+    }
     function then(cb, eb, pb) {
       var def = promise();
       function done() {
@@ -15,20 +23,23 @@
             try {
               value = callback(val);
             } catch (ex) {
-              return def.reject(ex);
+              def.reject(ex);
+              return next();
             }
             def.fulfill(value);
+            next();
           }, 0);
         } else if (fulfilled) {
           def.fulfill(val);
+          next();
         } else {
           def.reject(val);
+          next();
         }
       }
-      if (resolved) {
-        done();
-      } else {
-        waiting.push(done);
+      waiting.push(done);
+      if (resolved && !running) {
+        next();
       }
       return def.promise;
     }
@@ -41,9 +52,7 @@
       resolved = true;
       fulfilled = success;
       val = value;
-      for (var i = 0; i < waiting.length; i++) {
-        waiting[i]();
-      }
+      next();
     }
     function fulfill(val) {
       resolve(true, val);
