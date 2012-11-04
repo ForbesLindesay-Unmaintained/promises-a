@@ -4,7 +4,8 @@
         fulfilled = false,
         val,
         waiting = [],
-        running = false
+        running = false,
+        prom = {then: then, valueOf: valueOf}
 
     function next() {
       if (waiting.length) {
@@ -62,8 +63,12 @@
       resolve(false, err)
     }
 
+    function valueOf() {
+      return fulfilled ? val : prom;
+    }
+
     return {
-      promise: {then: then},
+      promise: prom,
       fulfill: fulfill,
       reject: reject
     }
