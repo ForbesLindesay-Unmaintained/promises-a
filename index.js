@@ -7,20 +7,20 @@
         running = false,
         prom = {then: then, valueOf: valueOf}
 
-    function next() {
+    function next(skipTimeout) {
       if (waiting.length) {
         running = true
-        waiting.shift()()
+        waiting.shift()(skipTimeout || false)
       } else {
         running = false
       }
     }
     function then(cb, eb, pb) {
       var def = promise()
-      function done() {
+      function done(skipTimeout) {
         var callback = fulfilled ? cb : eb
         if (callback) {
-          setTimeout(function () {
+          function timeoutDone() {
             var value;
             try {
               value = callback(val)
@@ -29,14 +29,16 @@
               return next()
             }
             def.fulfill(value);
-            next();
-          }, 0)
+            next(true);
+          }
+          if (skipTimeout) timeoutDone();
+          else setTimeout(timeoutDone, 0)
         } else if (fulfilled) {
           def.fulfill(val)
-          next()
+          next(skipTimeout)
         } else {
           def.reject(val)
-          next()
+          next(skipTimeout)
         }
       }
       waiting.push(done);
