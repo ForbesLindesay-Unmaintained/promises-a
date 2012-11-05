@@ -79,3 +79,4 @@ function loadDataAsync(id, timeout) {
 ## License
 
   MIT
+
