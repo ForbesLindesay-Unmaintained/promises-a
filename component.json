@@ -2,7 +2,7 @@
   "name": "promises-a",
   "repo": "ForbesLindesay/promises-a",
   "description": "A bare bones implementation of Promises/A intended to pass https://github.com/domenic/promise-tests while being as small as possible.",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "keywords": [],
   "dependencies": {},
   "development": {},
