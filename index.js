@@ -5,7 +5,7 @@
         val,
         waiting = [],
         running = false,
-        prom = {then: then, valueOf: valueOf}
+        prom = {then: then, valueOf: valueOf, done: done}
 
     function next(skipTimeout) {
       if (waiting.length) {
@@ -15,11 +15,11 @@
         running = false
       }
     }
-    function then(cb, eb, pb) {
+    function then(cb, eb) {
       var def = promise()
       function done(skipTimeout) {
         var callback = fulfilled ? cb : eb
-        if (callback) {
+        if (typeof callback === 'function') {
           function timeoutDone() {
             var value;
             try {
@@ -46,6 +46,17 @@
         next()
       }
       return def.promise
+    }
+    function done(cb, eb) {
+      var p = prom
+      if (cb || eb) {
+        p = p.then(cb, eb)
+      }
+      p.then(null, function (reason) {
+        setTimeout(function () {
+          throw reason
+        }, 0)
+      })
     }
     function resolve(success, value) {
       if (resolved) return;
