@@ -1,6 +1,6 @@
 {
   "name": "promises-a",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "A bare bones implementation of Promises/A intended to pass https://github.com/domenic/promise-tests while being as small as possible",
   "main": "index.js",
   "scripts": {

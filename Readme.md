@@ -48,7 +48,7 @@ function loadDataAsync(id, timeout) {
 }
 ```
 
-  Because the promise can only be resolved once, the rejection will be ignored if the operation is successful within the timeout.  A timeout of 0 will also be treated as infinite.
+  Because the promise can only be resolved once, the rejection will be ignored if the operation is successful within the timeout. A timeout of 0 will also be treated as infinite.
 
 ## API
 
@@ -60,7 +60,7 @@ function loadDataAsync(id, timeout) {
 
 #### deferred#promise
 
-  Get the promise represented by the deferred.  This is just an object with a function called then.
+  Get the promise represented by the deferred. This is just an object with a function called then.
 
 #### deferred#fulfill(value)
 
@@ -72,9 +72,15 @@ function loadDataAsync(id, timeout) {
 
 ### promise
 
-#### promise#then(callback, errback, progback)
+#### promise#then(callback, errback)
 
-  You can call then with three optional args.  The callback is called when the promise is fulfilled, the errback is called when the promise is rejected.  At the moment, progback is ignored.  Calls to then can be chained, and you can return a promise from the callback, which will be resolved before being passed to the chained then.
+  You can call then with tow optional args. The callback is called when the promise is fulfilled, the errback is called when the promise is rejected. Then also returns a fresh promise which is set to the result of the callback or errback.  If you want to forward a rejection either make errback `null`, or re-throw the error in errback.
+
+  If you return a promise from callback or errback it will be resolved before being set as the result of the promise.
+
+#### promise#done(callback, errback)
+
+  Equivalent to calling then, except you don't get a new promise out and exceptions are never swallowed.
 
 ## License
 
