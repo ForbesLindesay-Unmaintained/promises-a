@@ -60,7 +60,7 @@
     }
     function resolve(success, value) {
       if (resolved) return;
-      if (success && typeof value === 'object' && typeof value.then === 'function') {
+      if (success  && value && typeof value.then === 'function') {
         value.then(fulfill, reject)
         return
       }
