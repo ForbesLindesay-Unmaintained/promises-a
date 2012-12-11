@@ -47,17 +47,6 @@
       }
       return def.promise
     }
-    function done(cb, eb) {
-      var p = prom
-      if (cb || eb) {
-        p = p.then(cb, eb)
-      }
-      p.then(null, function (reason) {
-        setTimeout(function () {
-          throw reason
-        }, 0)
-      })
-    }
     function resolve(success, value) {
       if (resolved) return;
       if (success  && value && typeof value.then === 'function') {
@@ -78,6 +67,19 @@
 
     function valueOf() {
       return fulfilled ? val : prom;
+    }
+
+
+    function done(cb, eb) {
+      var p = this; // support 'hot' promises
+      if (cb || eb) {
+        p = p.then(cb, eb)
+      }
+      p.then(null, function (reason) {
+        setTimeout(function () {
+          throw reason
+        }, 0)
+      })
     }
 
     return {
