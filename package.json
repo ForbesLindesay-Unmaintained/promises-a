@@ -19,6 +19,6 @@
   "license": "MIT",
   "devDependencies": {
     "promise-tests": "*",
-    "uglify-js": "*"
+    "uglify-js": ">=2.8.16"
   }
 }
